@@ -5,8 +5,8 @@
 //  Created by Juan Adolfo Velazquez Reyes on 16/06/26.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @main
 struct GrooveTrackerApp: App {
@@ -25,7 +25,12 @@ struct GrooveTrackerApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            let httpClient = HTTPClient()
+            let repository = DiscoveryRepository(httpClient: httpClient)
+            let useCase = GetTracksUseCase(repository: repository)
+            let viewModel = DiscoveryViewModel(getTracksUseCase: useCase)
+
+            DiscoveryView(viewModel: viewModel)
         }
 //        .modelContainer(sharedModelContainer)
     }
