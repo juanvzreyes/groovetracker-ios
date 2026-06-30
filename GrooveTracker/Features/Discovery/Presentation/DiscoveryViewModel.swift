@@ -22,9 +22,14 @@ class DiscoveryViewModel {
     var searchQuery: String = ""
 
     private let getTracksUseCase: GetTracksUseCaseProtocol
+    private let saveTrackUseCase: SaveTrackUseCaseProtocol
 
-    init(getTracksUseCase: GetTracksUseCaseProtocol) {
+    init(
+        getTracksUseCase: GetTracksUseCaseProtocol,
+        saveTrackUseCase: SaveTrackUseCaseProtocol
+    ) {
         self.getTracksUseCase = getTracksUseCase
+        self.saveTrackUseCase = saveTrackUseCase
     }
 
     func searchTracks() async {
@@ -40,6 +45,15 @@ class DiscoveryViewModel {
             }
         } catch {
             viewState = .error(message: error.localizedDescription)
+        }
+    }
+
+    func saveToFavorites(track: Track) {
+        do {
+            try saveTrackUseCase.execute(track: track)
+            print("¡Track guardado en favoritos!")
+        } catch {
+            viewState = .error(message: "No se pudo guardar la canción en favoritos")
         }
     }
 }

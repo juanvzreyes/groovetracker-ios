@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TrackCardView: View {
     let track: Track
+    var onSave: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -37,6 +38,19 @@ struct TrackCardView: View {
             .aspectRatio(1, contentMode: .fit)
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .shadow(radius: 4)
+            .overlay(alignment: .topTrailing) {
+                Button(action: {
+                    let impactMed = UIImpactFeedbackGenerator(style: .medium)
+                    impactMed.impactOccurred()
+                    onSave()
+                }) {
+                    Image(systemName: "star.circle.fill")
+                        .font(.title)
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(.white, .black.opacity(0.6))
+                        .padding(8)
+                }
+            }
 
             Text(track.title)
                 .font(.headline)
