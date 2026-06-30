@@ -36,7 +36,9 @@ struct DiscoveryView: View {
                     ScrollView {
                         LazyVGrid(columns: columns, spacing: 16) {
                             ForEach(tracks) { track in
-                                TrackCardView(track: track)
+                                TrackCardView(track: track) {
+                                    viewModel.saveToFavorites(track: track)
+                                }
                             }
                         }
                         .padding()
