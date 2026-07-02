@@ -16,30 +16,34 @@ struct FavoritesView: View {
 
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(viewModel.savedTracks) { track in
-                    HStack {
-                        AsyncImage(url: track.coverImageURL) { image in
-                            image.resizable().aspectRatio(contentMode: .fill)
-                        } placeholder: {
-                            Color.gray
-                        }
-                        .frame(width: 50, height: 50)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-
-                        VStack(alignment: .leading) {
-                            Text(track.title).font(.headline)
-                            Text(track.artistName).font(.subheadline)
-                                .foregroundStyle(.secondary)
-                        }
-                    }
+            Group {
+                if viewModel.savedTracks.isEmpty {
+                    emptyState
+                } else {
+                    listView
                 }
-                .onDelete(perform: viewModel.delete)
             }
             .navigationTitle("Favoritos")
             .onAppear {
                 viewModel.loadFavorites()
             }
+        }
+    }
+
+    private var emptyState: some View {
+        GTEmptyStateView(
+            title: "Aún no hay favoritos",
+            systemImage: "star",
+            description: "Las canciones que marques con una estrella aparecerán en esta sección"
+        )
+    }
+
+    private var listView: some View {
+        List {
+            ForEach(viewModel.savedTracks) { track in
+                FavoritesRowView(track: track)
+            }
+            .onDelete(perform: viewModel.delete)
         }
     }
 }
