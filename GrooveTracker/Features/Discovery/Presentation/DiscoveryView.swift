@@ -24,10 +24,10 @@ struct DiscoveryView: View {
             Group {
                 switch viewModel.viewState {
                 case .idle:
-                    ContentUnavailableView(
-                        "Explora Música",
+                    GTEmptyStateView(
+                        title: "Explora Música",
                         systemImage: "music.note.list",
-                        description: Text("Busca tus géneros o artistas favoritos para ver sus detalles técnicos")
+                        description: "Busca tus géneros o artistas favoritos para ver sus detalles técnicos"
                     )
                 case .loading:
                     ProgressView("Buscando...")
@@ -44,10 +44,10 @@ struct DiscoveryView: View {
                         .padding()
                     }
                 case .error(let message):
-                    ContentUnavailableView(
-                        "Ocurrió un problema",
+                    GTEmptyStateView(
+                        title: "Ocurrió un problema",
                         systemImage: "exclamationmark.triangle",
-                        description: Text(message)
+                        description: message
                     )
                 }
             }
