@@ -13,35 +13,12 @@ struct TrackCardView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            AsyncImage(url: track.coverImageURL) { phase in
-                switch phase {
-                case .empty:
-                    ZStack {
-                        Color(.systemGray6)
-                        ProgressView()
-                    }
-                case .success(let image):
-                    image
-                        .resizable()
-                        .scaledToFill()
-                case .failure:
-                    ZStack {
-                        Color(.systemGray6)
-                        Image(systemName: "music.note")
-                            .font(.largeTitle)
-                            .foregroundColor(.gray)
-                    }
-                @unknown default:
-                    Color(.systemGray6)
-                }
-            }
-            .aspectRatio(1, contentMode: .fit)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .shadow(radius: 4)
+            GTAsyncImage(url: track.coverImageURL)
+                .aspectRatio(1, contentMode: .fit)
+                .cardStyle(cornerRadius: 12, shadowRadius: 4)
             .overlay(alignment: .topTrailing) {
                 Button(action: {
-                    let impactMed = UIImpactFeedbackGenerator(style: .medium)
-                    impactMed.impactOccurred()
+                    triggerHapticFeedback(.medium)
                     onSave()
                 }) {
                     Image(systemName: "star.circle.fill")
@@ -61,12 +38,7 @@ struct TrackCardView: View {
                 .foregroundColor(.secondary)
                 .lineLimit(1)
 
-            Text(track.genre)
-                .font(.caption)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 4)
-                .background(Color(.systemGroupedBackground))
-                .clipShape(Capsule())
+            GTPillTag(text: track.genre)
         }
     }
 }
